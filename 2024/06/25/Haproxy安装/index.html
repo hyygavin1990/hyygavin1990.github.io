@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>Haproxy安装 | hyygavinblogs</title>
+  <meta http-equiv="X-UA-Compatible" content="IE=Edge,chrome=1">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="keywords" content="">
+
+  <link rel="stylesheet" href="https://unpkg.com/lxgw-wenkai-screen-webfont@1.7.0/lxgwwenkaiscreen.css">
+
+  
+  
+<link rel="stylesheet" href="/fonts/sea-font.css">
+
+
+  
+  
+<link rel="stylesheet" href="/css/main.css">
+
+
+  
+  <meta name="description" content="1.下载1wget http:&#x2F;&#x2F;www.haproxy.org&#x2F;download&#x2F;1.8&#x2F;src&#x2F;haproxy-1.8.14.tar.gz  2.解压12tar -zxvf haproxy-1.8.14.tar.gzcd haproxy-1.8.14  3.安装12make TARGET&#x3D;linux2628 ARCH&#x3D;x86_64 PREFIX&#x3D;&#x2F;mydata&#x2F;haproxymake inst">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Haproxy安装">
+<meta property="og:url" content="https://hyygavin1990.github.io/2024/06/25/Haproxy%E5%AE%89%E8%A3%85/index.html">
+<meta property="og:site_name" content="hyygavinblogs">
+<meta property="og:description" content="1.下载1wget http:&#x2F;&#x2F;www.haproxy.org&#x2F;download&#x2F;1.8&#x2F;src&#x2F;haproxy-1.8.14.tar.gz  2.解压12tar -zxvf haproxy-1.8.14.tar.gzcd haproxy-1.8.14  3.安装12make TARGET&#x3D;linux2628 ARCH&#x3D;x86_64 PREFIX&#x3D;&#x2F;mydata&#x2F;haproxymake inst">
+<meta property="og:locale" content="en_US">
+<meta property="article:published_time" content="2024-06-25T02:07:10.000Z">
+<meta property="article:modified_time" content="2024-06-25T06:23:48.555Z">
+<meta property="article:author" content="hyy">
+<meta property="article:tag" content="安装攻略">
+<meta property="article:tag" content="haproxy">
+<meta name="twitter:card" content="summary">
+
+  <style>
+    :root {
+      --sea-color-primary: #10b981;
+    }
+  </style>
+
+  
+<script src="/js/global.js"></script>
+
+<meta name="generator" content="Hexo 7.2.0"></head>
+<body>
+  <header class="sea-header">
+    <nav class="sea-nav-wrap">
+  <h1 class="sea-nav-logo" title="">
+    <a href="/">hyygavinblogs</a>
+  </h1>
+  <div class="sea-nav-menus">
+    <div class="sea-menu-pc-wrap">
+  
+    <a
+      class="sea-menu-link"
+      
+      href="/archives/"
+    >
+      归档
+    </a>
+  
+    <a
+      class="sea-menu-link"
+      
+      href="/tags/"
+    >
+      标签
+    </a>
+  
+</div>
+
+    <div id="sea-mobile-nav-toggle">
+      <i class="sea-font">bars</i>
+    </div>
+  </div>
+</nav>
+  </header>
+  <main id="sea-main-wrapper">
+    <article class="sea-page-card-wrapper">
+  <header class="sea-article-header">
+    <h1 class="sea-article-title">Haproxy安装</h1>
+    
+      <div class="sea-post-meta sea-post-meta__center">
+        <div class="sea-post-time">
+  <i class="sea-font">date</i>
+  <time datetime="2024-06-25T02:07:10.000Z">2024-06-25</time>
+</div>
+        
+        
+  <div class="sea-post-tags">
+    <i class="sea-font">tag</i>
+    <a class="tag-link" href="/tags/haproxy/" rel="tag">haproxy</a> , <a class="tag-link" href="/tags/%E5%AE%89%E8%A3%85%E6%94%BB%E7%95%A5/" rel="tag">安装攻略</a>
+  </div>
+
+      </div>
+    
+  </header>
+  <div class="sea-article-content sea-doc">
+    <h1 id="1-下载"><a href="#1-下载" class="headerlink" title="1.下载"></a>1.下载</h1><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">wget http://www.haproxy.org/download/1.8/src/haproxy-1.8.14.tar.gz</span><br></pre></td></tr></table></figure>
+
+<h1 id="2-解压"><a href="#2-解压" class="headerlink" title="2.解压"></a>2.解压</h1><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">tar -zxvf haproxy-1.8.14.tar.gz</span><br><span class="line">cd haproxy-1.8.14</span><br></pre></td></tr></table></figure>
+
+<h1 id="3-安装"><a href="#3-安装" class="headerlink" title="3.安装"></a>3.安装</h1><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">make TARGET=linux2628 ARCH=x86_64 PREFIX=/mydata/haproxy</span><br><span class="line">make install PREFIX=/mydata/haproxy</span><br></pre></td></tr></table></figure>
+<p>参数说明<br>TARGET&#x3D;linux26 #内核版本，使用uname -r查看内核，如：2.6.18-371.el5，此时该参数就为linux26；kernel 大于2.6.28的<br>用：TARGET&#x3D;linux2628<br>ARCH&#x3D;x86_64 #系统位数<br>PREFIX&#x3D;&#x2F;usr&#x2F;local&#x2F;haprpxy  #&#x2F;usr&#x2F;local&#x2F;haprpxy为haprpxy安装路径</p>
+<h1 id="4-配置"><a href="#4-配置" class="headerlink" title="4.配置"></a>4.配置</h1><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">cd /home/haproxy #进入haproxy安装目录</span><br><span class="line">touch haproxy.cfg #创建配置文件</span><br><span class="line">vi haproxy.cfg #编辑配置文件</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta prompt_"># </span><span class="language-bash">haproxy.cfg设置为单线程模式，配置如下</span></span><br><span class="line">global</span><br><span class="line">    log 127.0.0.1 local1</span><br><span class="line">    maxconn 65000             #最大连接数</span><br><span class="line">    daemon                    #守护进程运行</span><br><span class="line">    nbproc 1                  #进程数量</span><br><span class="line"></span><br><span class="line">defaults</span><br><span class="line">   log     global</span><br><span class="line">   mode    http               #7层#默认的模式mode &#123;tcp|http|health&#125;,tcp是4层,http是7层,health只会返回OK</span><br><span class="line">   option  httplog            #http 日志格式</span><br><span class="line">   option  httpclose          #主动关闭http通道,HA-Proxy不支持keep-alive模式</span><br><span class="line">   option  redispatch         #serverId对应的服务器挂掉后,强制定向到其他健康的服务器</span><br><span class="line">   retries  3</span><br><span class="line">   maxconn 50000              #最大连接数</span><br><span class="line">   timeout http-request 10s</span><br><span class="line">   timeout queue  1m</span><br><span class="line">   timeout connect 10s</span><br><span class="line">   timeout client  1m</span><br><span class="line">   timeout server  1m</span><br><span class="line">   timeout http-keep-alive 10s</span><br><span class="line">   timeout check 10s</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">frontend main</span><br><span class="line">        bind *:9999             #监听地址</span><br><span class="line">        default_backend   my_webserver     #定义一个名为my_app前端部分。此处将对于的请求转发给后端</span><br><span class="line">        balance roundrobin     #负载均衡算法（#banlance roundrobin 轮询）</span><br><span class="line"></span><br><span class="line">backend my_webserver</span><br><span class="line">        mode http</span><br><span class="line">        option  forwardfor</span><br><span class="line">        balance roundrobin</span><br><span class="line">        cookie  SERVERID</span><br><span class="line">        option  httpchk GET /demo</span><br><span class="line">        server  web01 192.168.2.90:9000 cookie web01 check inter 2000 rise 3 fall 3 weight 3 # 这里全部都是gateway的地址</span><br><span class="line">        server  web02 192.168.2.91:9000 cookie web02 check inter 2000 rise 3 fall 3 weight 3</span><br><span class="line">		server  web03 192.168.2.92:9000 cookie web03 check inter 2000 rise 3 fall 3 weight 3</span><br><span class="line">        server  web04 192.168.2.93:9000 cookie web04 check inter 2000 rise 3 fall 3 weight 3</span><br><span class="line">		server  web05 192.168.2.94:9000 cookie web05 check inter 2000 rise 3 fall 3 weight 3</span><br><span class="line">        server  web06 192.168.2.90:9001 cookie web06 check inter 2000 rise 3 fall 3 weight 3</span><br><span class="line">		server  web07 192.168.2.91:9001 cookie web07 check inter 2000 rise 3 fall 3 weight 3</span><br><span class="line">        server  web08 192.168.2.92:9001 cookie web08 check inter 2000 rise 3 fall 3 weight 3</span><br><span class="line">		server  web09 192.168.2.93:9001 cookie web09 check inter 2000 rise 3 fall 3 weight 3</span><br><span class="line">        server  web10 192.168.2.94:9001 cookie web10 check inter 2000 rise 3 fall 3 weight 3</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta prompt_"># </span><span class="language-bash">haproxy.cfg设置为多线程模式，配置如下</span></span><br><span class="line">global</span><br><span class="line">    	log 127.0.0.1 local1</span><br><span class="line">    	maxconn 65000            #最大连接数</span><br><span class="line">    	ulimit-n 130019         	#设置每个进程的可用的最大文件描述符</span><br><span class="line">    	daemon                   #守护进程运行                 </span><br><span class="line">    	nbproc 8				#进程数量</span><br><span class="line">	    cpu-map 1 0</span><br><span class="line">	    cpu-map 2 1</span><br><span class="line">	    cpu-map 3 2</span><br><span class="line">	    cpu-map 4 3</span><br><span class="line">	    cpu-map 5 4</span><br><span class="line">	    cpu-map 6 5</span><br><span class="line">	    cpu-map 7 6</span><br><span class="line">	    cpu-map 8 7</span><br><span class="line">	    nbthread 5</span><br><span class="line"></span><br><span class="line">defaults</span><br><span class="line">        log     global</span><br><span class="line">        mode    http               #7层#默认的模式mode &#123;tcp|http|health&#125;,tcp是4层,http是7层,health只会返回OK</span><br><span class="line">        option  httplog            #http 日志格式</span><br><span class="line">        option  httpclose          #主动关闭http通道,HA-Proxy不支持keep-alive模式</span><br><span class="line">        option  redispatch         #serverId对应的服务器挂掉后,强制定向到其他健康的服务器</span><br><span class="line">        retries  3</span><br><span class="line">        maxconn 50000              #最大连接数</span><br><span class="line">        timeout http-request 10s</span><br><span class="line">        timeout queue  1m</span><br><span class="line">        timeout connect 10s</span><br><span class="line">        timeout client  1m</span><br><span class="line">        timeout server  1m</span><br><span class="line">        timeout http-keep-alive 30s</span><br><span class="line">        timeout check 10s</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">frontend main</span><br><span class="line">        bind *:9999             #监听地址</span><br><span class="line">        default_backend   my_webserver     #定义一个名为my_app前端部分。此处将对于的请求转发给后端</span><br><span class="line">        #balance roundrobin     #负载均衡算法（#banlance roundrobin 轮询）</span><br><span class="line"></span><br><span class="line">backend my_webserver</span><br><span class="line">        mode http</span><br><span class="line">        option  forwardfor</span><br><span class="line">        balance roundrobin</span><br><span class="line">        cookie  SERVERID</span><br><span class="line">        option  httpchk GET /test</span><br><span class="line">        server  web01 192.168.2.37:9000 cookie web01 check inter 2000 rise 3 fall 3 weight 3 # 这里全部都是gateway的地址</span><br><span class="line">        server  web02 192.168.2.38:9000 cookie web02 check inter 2000 rise 3 fall 3 weight 3</span><br><span class="line">	    server  web03 192.168.2.38:9001 cookie web03 check inter 2000 rise 3 fall 3 weight 3</span><br><span class="line">	    server  web06 192.168.2.40:9000 cookie web06 check inter 2000 rise 3 fall 3 weight 3</span><br><span class="line">	    server  web07 192.168.2.40:9001 cookie web07 check inter 2000 rise 3 fall 3 weight 3</span><br><span class="line">	    server  web08 192.168.2.41:9000 cookie web08 check inter 2000 rise 3 fall 3 weight 3</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<h1 id="5-运行"><a href="#5-运行" class="headerlink" title="5.运行"></a>5.运行</h1><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">cd /mydata/haproxy</span><br><span class="line">./sbin/haproxy -f haproxy.cfg</span><br></pre></td></tr></table></figure>
+
+  </div>
+
+  
+    
+  <div class="sea-prev-next-wrapper">
+    
+    
+      <div class="next">
+        <a class="link" href="/2024/06/25/Redis%E5%AE%89%E8%A3%85%E8%AF%B4%E6%98%8E/">
+          Redis安装说明
+        </a>
+        <span>→</span>
+      </div>
+    
+  </div>
+
+  
+</article>
+
+
+  </main>
+  <footer id="sea-footer-container">
+  <div class="sea-footer-row">
+    <div class="sea-footer-menu-link">
+      
+    </div>
+    <span class="split-line">|</span>
+    <span id="busuanzi_container_site_uv">
+      UV: <span id="busuanzi_value_site_uv"></span>
+    </span>
+  </div>
+  
+  
+  <div class="sea-footer-row">
+    <div class="sea-footer-copyright">
+      <span>©</span>
+      
+        2024
+      
+      <span>·</span>
+      hyy
+    </div>
+    <span class="split-line">|</span>
+    <div class="sea-footer-theme-by">
+      Theme by <a class="theme" href="https://github.com/hai-zou/hexo-theme-sea" target="_blank">Sea</a>
+    </div>
+  </div>
+</footer>
+  <div class="sea-menu-mobile-wrap">
+  <div class="sea-menu-mobile-inner">
+    
+      <a
+        class="sea-menu-link"
+        
+        href="/archives/"
+      >
+        归档
+      </a>
+    
+      <a
+        class="sea-menu-link"
+        
+        href="/tags/"
+      >
+        标签
+      </a>
+    
+  </div>
+</div>
+<div id="sea-mobile-nav-dimmer"></div>
+  <div class="sea-float-tools-wrapper">
+  
+  <a class="sea-float-tools-btn" id="sea-back-to-top" href="#">
+    <i class="sea-font">arrow-up</i>
+  </a>
+
+  
+  
+
+  
+  <div class="sea-float-tools-btn" id="sea-theme-mode">
+    <i class="sea-font">theme</i>
+
+    <ul class="sea-theme-select-box">
+      <li class="sea-theme-select-item" id="sea-theme-auto">System</li>
+      <li class="sea-theme-select-item" id="sea-theme-light">Light</li>
+      <li class="sea-theme-select-item" id="sea-theme-dark">Dark</li>
+    </ul>
+  </div>
+</div>
+
+  
+<script src="/js/theme.js"></script>
+
+
+<script src="/js/main.js"></script>
+
+
+
+<script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+</body>
+</html>
