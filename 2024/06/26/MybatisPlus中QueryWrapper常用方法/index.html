@@ -13,7 +13,7 @@
   
   <title>
     
-      Haproxy安装 
+      MybatisPlus中QueryWrapper常用方法 
       
       
       |
@@ -163,25 +163,31 @@
   <!-- 文章内容页 url形式：https://yoursite/文章标题/ -->
   <div class="container post-details" id="post-details">
     <div class="post-content">
-      <div class="post-title">Haproxy安装</div>
+      <div class="post-title">MybatisPlus中QueryWrapper常用方法</div>
       <div class="post-attach">
         <span class="post-pubtime">
           <i class="iconfont icon-updatetime mr-10" title="Update time"></i>
-          2024-06-25 15:42:04
+          2024-06-26 10:19:43
         </span>
         
               <span class="post-tags">
                 <i class="iconfont icon-tags mr-10" title="Tags"></i>
                 
                 <span class="span--tag mr-8">
-                  <a href="/tags/%E5%AE%89%E8%A3%85%E6%94%BB%E7%95%A5/" title="安装攻略">
-                    #安装攻略
+                  <a href="/tags/%E6%95%B0%E6%8D%AE%E5%BA%93/" title="数据库">
+                    #数据库
                   </a>
                 </span>
                 
                 <span class="span--tag mr-8">
-                  <a href="/tags/haproxy/" title="haproxy">
-                    #haproxy
+                  <a href="/tags/mysql/" title="mysql">
+                    #mysql
+                  </a>
+                </span>
+                
+                <span class="span--tag mr-8">
+                  <a href="/tags/mybatis-plus/" title="mybatis-plus">
+                    #mybatis-plus
                   </a>
                 </span>
                 
@@ -189,25 +195,172 @@
           
       </div>
       <div class="markdown-body">
-        <h1 id="1-下载"><a href="#1-下载" class="headerlink" title="1.下载"></a>1.下载</h1><figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">wget http://www.haproxy.org/download/1.8/src/haproxy-1.8.14.tar.gz</span><br></pre></td></tr></table></figure>
-
-<h1 id="2-解压"><a href="#2-解压" class="headerlink" title="2.解压"></a>2.解压</h1><figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">tar -zxvf haproxy-1.8.14.tar.gz</span><br><span class="line">cd haproxy-1.8.14</span><br></pre></td></tr></table></figure>
-
-<h1 id="3-安装"><a href="#3-安装" class="headerlink" title="3.安装"></a>3.安装</h1><figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">make TARGET=linux2628 ARCH=x86_64 PREFIX=/mydata/haproxy</span><br><span class="line">make install PREFIX=/mydata/haproxy</span><br></pre></td></tr></table></figure>
-<p>参数说明<br>TARGET&#x3D;linux26 #内核版本，使用uname -r查看内核，如：2.6.18-371.el5，此时该参数就为linux26；kernel 大于2.6.28的<br>用：TARGET&#x3D;linux2628<br>ARCH&#x3D;x86_64 #系统位数<br>PREFIX&#x3D;&#x2F;usr&#x2F;local&#x2F;haprpxy  #&#x2F;usr&#x2F;local&#x2F;haprpxy为haprpxy安装路径</p>
-<h1 id="4-配置"><a href="#4-配置" class="headerlink" title="4.配置"></a>4.配置</h1><figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">cd /home/haproxy #进入haproxy安装目录</span><br><span class="line">touch haproxy.cfg #创建配置文件</span><br><span class="line">vi haproxy.cfg #编辑配置文件</span><br></pre></td></tr></table></figure>
-
-<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line"><span class="meta prompt_"># </span><span class="language-bash">haproxy.cfg设置为单线程模式，配置如下</span></span><br><span class="line">global</span><br><span class="line">    log 127.0.0.1 local1</span><br><span class="line">    maxconn 65000             #最大连接数</span><br><span class="line">    daemon                    #守护进程运行</span><br><span class="line">    nbproc 1                  #进程数量</span><br><span class="line"></span><br><span class="line">defaults</span><br><span class="line">    log     global</span><br><span class="line">    mode    http               #7层#默认的模式mode &#123;tcp|http|health&#125;,tcp是4层,http是7层,health只会返回OK</span><br><span class="line">    option  httplog            #http 日志格式</span><br><span class="line">    option  httpclose          #主动关闭http通道,HA-Proxy不支持keep-alive模式</span><br><span class="line">    option  redispatch         #serverId对应的服务器挂掉后,强制定向到其他健康的服务器</span><br><span class="line">    retries  3</span><br><span class="line">    maxconn 50000              #最大连接数</span><br><span class="line">    timeout http-request 10s</span><br><span class="line">    timeout queue  1m</span><br><span class="line">    timeout connect 10s</span><br><span class="line">    timeout client  1m</span><br><span class="line">    timeout server  1m</span><br><span class="line">    timeout http-keep-alive 10s</span><br><span class="line">    timeout check 10s</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">frontend main</span><br><span class="line">    bind *:9999             #监听地址</span><br><span class="line">    default_backend   my_webserver     #定义一个名为my_app前端部分。此处将对于的请求转发给后端</span><br><span class="line">    balance roundrobin     #负载均衡算法（#banlance roundrobin 轮询）</span><br><span class="line"></span><br><span class="line">backend my_webserver</span><br><span class="line">    mode http</span><br><span class="line">    option  forwardfor</span><br><span class="line">    balance roundrobin</span><br><span class="line">    cookie  SERVERID</span><br><span class="line">    option  httpchk GET /demo</span><br><span class="line">    server  web01 192.168.2.90:9000 cookie web01 check inter 2000 rise 3 fall 3 weight 3</span><br><span class="line">    server  web02 192.168.2.91:9000 cookie web02 check inter 2000 rise 3 fall 3 weight 3</span><br><span class="line">    server  web03 192.168.2.92:9000 cookie web03 check inter 2000 rise 3 fall 3 weight 3</span><br><span class="line">    server  web04 192.168.2.93:9000 cookie web04 check inter 2000 rise 3 fall 3 weight 3</span><br><span class="line">    server  web05 192.168.2.94:9000 cookie web05 check inter 2000 rise 3 fall 3 weight 3</span><br><span class="line">    server  web06 192.168.2.90:9001 cookie web06 check inter 2000 rise 3 fall 3 weight 3</span><br><span class="line">    server  web07 192.168.2.91:9001 cookie web07 check inter 2000 rise 3 fall 3 weight 3</span><br><span class="line">    server  web08 192.168.2.92:9001 cookie web08 check inter 2000 rise 3 fall 3 weight 3</span><br><span class="line">    server  web09 192.168.2.93:9001 cookie web09 check inter 2000 rise 3 fall 3 weight 3</span><br><span class="line">    server  web10 192.168.2.94:9001 cookie web10 check inter 2000 rise 3 fall 3 weight 3</span><br><span class="line"></span><br><span class="line">        </span><br></pre></td></tr></table></figure>
-
-<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line"><span class="meta prompt_"># </span><span class="language-bash">haproxy.cfg设置为多线程模式，配置如下</span></span><br><span class="line">global</span><br><span class="line">    	log 127.0.0.1 local1</span><br><span class="line">    	maxconn 65000            #最大连接数</span><br><span class="line">    	ulimit-n 130019         	#设置每个进程的可用的最大文件描述符</span><br><span class="line">    	daemon                   #守护进程运行                 </span><br><span class="line">    	nbproc 8				#进程数量</span><br><span class="line">	    cpu-map 1 0</span><br><span class="line">	    cpu-map 2 1</span><br><span class="line">	    cpu-map 3 2</span><br><span class="line">	    cpu-map 4 3</span><br><span class="line">	    cpu-map 5 4</span><br><span class="line">	    cpu-map 6 5</span><br><span class="line">	    cpu-map 7 6</span><br><span class="line">	    cpu-map 8 7</span><br><span class="line">	    nbthread 5</span><br><span class="line"></span><br><span class="line">defaults</span><br><span class="line">        log     global</span><br><span class="line">        mode    http               #7层#默认的模式mode &#123;tcp|http|health&#125;,tcp是4层,http是7层,health只会返回OK</span><br><span class="line">        option  httplog            #http 日志格式</span><br><span class="line">        option  httpclose          #主动关闭http通道,HA-Proxy不支持keep-alive模式</span><br><span class="line">        option  redispatch         #serverId对应的服务器挂掉后,强制定向到其他健康的服务器</span><br><span class="line">        retries  3</span><br><span class="line">        maxconn 50000              #最大连接数</span><br><span class="line">        timeout http-request 10s</span><br><span class="line">        timeout queue  1m</span><br><span class="line">        timeout connect 10s</span><br><span class="line">        timeout client  1m</span><br><span class="line">        timeout server  1m</span><br><span class="line">        timeout http-keep-alive 30s</span><br><span class="line">        timeout check 10s</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">frontend main</span><br><span class="line">        bind *:9999             #监听地址</span><br><span class="line">        default_backend   my_webserver     #定义一个名为my_app前端部分。此处将对于的请求转发给后端</span><br><span class="line">        #balance roundrobin     #负载均衡算法（#banlance roundrobin 轮询）</span><br><span class="line"></span><br><span class="line">backend my_webserver</span><br><span class="line">        mode http</span><br><span class="line">        option  forwardfor</span><br><span class="line">        balance roundrobin</span><br><span class="line">        cookie  SERVERID</span><br><span class="line">        option  httpchk GET /test</span><br><span class="line">        server  web01 192.168.2.37:9000 cookie web01 check inter 2000 rise 3 fall 3 weight 3 # 这里全部都是gateway的地址</span><br><span class="line">        server  web02 192.168.2.38:9000 cookie web02 check inter 2000 rise 3 fall 3 weight 3</span><br><span class="line">        server  web03 192.168.2.38:9001 cookie web03 check inter 2000 rise 3 fall 3 weight 3</span><br><span class="line">        server  web06 192.168.2.40:9000 cookie web06 check inter 2000 rise 3 fall 3 weight 3</span><br><span class="line">        server  web07 192.168.2.40:9001 cookie web07 check inter 2000 rise 3 fall 3 weight 3</span><br><span class="line">        server  web08 192.168.2.41:9000 cookie web08 check inter 2000 rise 3 fall 3 weight 3</span><br><span class="line"></span><br></pre></td></tr></table></figure>
-<h1 id="5-运行"><a href="#5-运行" class="headerlink" title="5.运行"></a>5.运行</h1><figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">cd /mydata/haproxy</span><br><span class="line">./sbin/haproxy -f haproxy.cfg</span><br></pre></td></tr></table></figure>
+        <h2 id="QueryWrapper常用方法列表"><a href="#QueryWrapper常用方法列表" class="headerlink" title="QueryWrapper常用方法列表"></a><strong>QueryWrapper常用方法列表</strong></h2><table>
+<thead>
+<tr>
+<th>函数</th>
+<th>说明</th>
+<th>例子</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>eq</td>
+<td>等于(&#x3D;)</td>
+<td>queryWrapper.eq(&quot;user_name&quot;, &quot;张三&quot;); &#x2F;&#x2F;user_name&#x3D;&quot;张三&quot;</td>
+</tr>
+<tr>
+<td>ne</td>
+<td>不等于(&lt;&gt;)</td>
+<td>queryWrapper.ne(&quot;user_name&quot;, &quot;张三&quot;); &#x2F;&#x2F;user_name&lt;&gt;&quot;张三&quot;</td>
+</tr>
+<tr>
+<td>gt</td>
+<td>大于(&gt;)</td>
+<td>queryWrapper.gt(&quot;level&quot;, 1); &#x2F;&#x2F;level&gt;1</td>
+</tr>
+<tr>
+<td>ge</td>
+<td>大于等于(&gt;&#x3D;)</td>
+<td>queryWrapper.ge(&quot;level&quot;, 1); &#x2F;&#x2F;level&gt;&#x3D;1</td>
+</tr>
+<tr>
+<td>lt</td>
+<td>小于(&lt;)</td>
+<td>queryWrapper.lt(&quot;level&quot;, 1); &#x2F;&#x2F;level&lt;1</td>
+</tr>
+<tr>
+<td>le</td>
+<td>小于等于(&lt;&#x3D;)</td>
+<td>queryWrapper.le(&quot;level&quot;, 1); &#x2F;&#x2F;level&lt;&#x3D;1</td>
+</tr>
+<tr>
+<td>between</td>
+<td>值1和值2之间</td>
+<td>queryWrapper.between(&quot;level&quot;, 1,10); &#x2F;&#x2F;level&gt;&#x3D;1 and level &lt;&#x3D;10</td>
+</tr>
+<tr>
+<td>notBetween</td>
+<td>不在值1和值2之间</td>
+<td>queryWrapper.notBetween(&quot;level&quot;, 1,10);&#x2F;&#x2F;level&lt;1 or level &gt;10</td>
+</tr>
+<tr>
+<td>like</td>
+<td>模糊匹配 like %值%</td>
+<td>queryWrapper.like(&quot;user_name&quot;, &quot;张三&quot;); &#x2F;&#x2F;user_name like &quot;%张三%&quot;</td>
+</tr>
+<tr>
+<td>not like</td>
+<td>不模糊匹配 not like %值%</td>
+<td>queryWrapper.notLike(&quot;user_name&quot;, &quot;张三&quot;); &#x2F;&#x2F;user_name not like &quot;%张三%&quot;</td>
+</tr>
+<tr>
+<td>likeLeft</td>
+<td>左模糊匹配 like %值</td>
+<td>queryWrapper.likeLeft(&quot;user_name&quot;, &quot;张三&quot;); &#x2F;&#x2F;user_name like &quot;%张三&quot;</td>
+</tr>
+<tr>
+<td>likeRight</td>
+<td>右模糊匹配 like 值%</td>
+<td>queryWrapper.likeRight(&quot;user_name&quot;, &quot;张三&quot;); &#x2F;&#x2F;user_name like &quot;张三%&quot;</td>
+</tr>
+<tr>
+<td>isNull</td>
+<td>字段 为空</td>
+<td>queryWrapper.isNull(&quot;user_name&quot;);&#x2F;&#x2F;user_name is null</td>
+</tr>
+<tr>
+<td>isNotNull</td>
+<td>字段 不为空</td>
+<td>queryWrapper.isNotNull(&quot;user_name&quot;);&#x2F;&#x2F;user_name is not null</td>
+</tr>
+<tr>
+<td>in</td>
+<td>字段 in (v0，v1，...)</td>
+<td>queryWrapper.in(&quot;user_name&quot;, {&quot;张三&quot;,&quot;李四&quot;,&quot;王五&quot;}); &#x2F;&#x2F; user_name in （&quot;张三&quot;,&quot;李四&quot;,&quot;王五&quot;）</td>
+</tr>
+<tr>
+<td>notIn</td>
+<td>字段 not in (v0，vl，...)</td>
+<td>queryWrapper.notIn(&quot;user_name&quot;, {&quot;张三&quot;,&quot;李四&quot;,&quot;王五&quot;}); &#x2F;&#x2F; user_name not in （&quot;张三&quot;,&quot;李四&quot;,&quot;王五&quot;）</td>
+</tr>
+<tr>
+<td>inSql</td>
+<td>字段 in ( sql语句)</td>
+<td>queryWrapper.in(&quot;user_name&quot;, (select name from student where age&lt; 23)); &#x2F;&#x2F; user_name in (select name from student where age&lt; 23)</td>
+</tr>
+<tr>
+<td>notInSql</td>
+<td>字段 not in ( sql语句)</td>
+<td>queryWrapper.notIn(&quot;user_name&quot;, (select name from student where age&lt; 23)); &#x2F;&#x2F; user_name not in (select name from student where age&lt; 23)</td>
+</tr>
+<tr>
+<td>groupBy</td>
+<td>分组:GROUP BY 字段</td>
+<td>queryWrapper.groupBy(&quot;user_name&quot;);&#x2F;&#x2F;group by user_name</td>
+</tr>
+<tr>
+<td>orderByAsc</td>
+<td>排序:ORDER BY 字段 ASC</td>
+<td>queryWrapper.orderByAsc(&quot;createTime&quot;);&#x2F;&#x2F;order by createTime asc</td>
+</tr>
+<tr>
+<td>orderByDesc</td>
+<td>排序:ORDER BY 字段 DESC</td>
+<td>queryWrapper.orderByDesc(&quot;createTime&quot;);&#x2F;&#x2F;order by createTime desc</td>
+</tr>
+<tr>
+<td>orderBy</td>
+<td>排序:ORDER BY 字段</td>
+<td>queryWrapper.orderBy(true, true, &quot;createTime&quot;);&#x2F;&#x2F;order by createTime asc</td>
+</tr>
+<tr>
+<td>or</td>
+<td>拼接 OR</td>
+<td>queryWrapper.eq(&quot;name&quot;, &quot;hello&quot;).and(w -&gt; w.ne(&quot;gender&quot;,1).or().isNull(&quot;age&quot;)) &#x2F;&#x2F; name&#x3D;hello and (gender&#x3D;1 or age&#x3D;null )</td>
+</tr>
+<tr>
+<td>and</td>
+<td>拼接 AND</td>
+<td>queryWrapper.eq(&quot;id&quot;, &quot;1&quot;).and(i-&gt;i.eq(&quot;user_name&quot;, &quot;张三&quot;)); &#x2F;&#x2F;id &#x3D; 1 and name &#x3D;&#39;张三&#39;</td>
+</tr>
+<tr>
+<td>apply</td>
+<td>拼接 sql</td>
+<td>说明: 该方法可用于数据库函数动态入参的params;queryWrapper.eq(&quot;id&quot;, user.getId()).apply(&quot;date_format(&#39;createTime&#39;,&#39;%Y-%m-%d&#39;) &#x3D; {0}&quot;,&quot;2023-07-25&quot;);&#x2F;&#x2F;date_format(&#39;createTime&#39;,&#39;%Y-%m-%d) &#x3D;&#39;2023-07-25&#39;&quot;)</td>
+</tr>
+<tr>
+<td>last</td>
+<td>无视优化规则直接拼接到 sql 的最后</td>
+<td>说明:只能调用一次,多次调用以最后一次为准 有sq1注入的风险,请谨慎使用queryWrapper.last(&quot; limit 1&quot;);&#x2F;&#x2F; limit 1</td>
+</tr>
+<tr>
+<td>exists</td>
+<td>拼接 EXISTS(sql语句)</td>
+<td>queryWrapper.exists(&quot;SELECT id FROM Student WHERE User.id &#x3D; Student.userId&quot;);&#x2F;&#x2F; exists (&quot;SELECT id FROM Student WHERE User.id &#x3D; Student.userId&quot;)</td>
+</tr>
+<tr>
+<td>notExists</td>
+<td>拼接 NOT EXISTS (sg1语句)</td>
+<td>queryWrapper.notExists(&quot;SELECT id FROM Student WHERE User.id &#x3D; Student.userId&quot;);&#x2F;&#x2F; not exists (&quot;SELECT id FROM Student WHERE User.id &#x3D; Student.userId&quot;)</td>
+</tr>
+<tr>
+<td>nested</td>
+<td>正常嵌套不带 AND或者 OR</td>
+<td>queryWrapper.nested(i-&gt;i.eq(&quot;id&quot;,&quot;1&quot;).eq(&quot;user_name&quot;,&quot;张三&quot;));&#x2F;&#x2F; id &#x3D; 1 and user_name&#x3D;&quot;张三&quot;</td>
+</tr>
+<tr>
+<td>having</td>
+<td>having ( sql语句)</td>
+<td>queryWrapper.having(&quot;sum(age) &gt; {0}&quot;,10);&#x2F;&#x2F;having sum(age) &gt; 10;</td>
+</tr>
+</tbody></table>
 
       </div>
       
         <div class="prev-or-next">
           <div class="post-foot-next">
             
-              <a href="/2024/06/25/Linux%E5%B8%B8%E7%94%A8%E5%91%BD%E4%BB%A4/" target="_self">
+              <a href="/2024/06/25/Haproxy%E5%AE%89%E8%A3%85/" target="_self">
                 <i class="iconfont icon-chevronleft"></i>
                 <span>Prev</span>
               </a>
@@ -216,21 +369,27 @@
           <div class="post-attach">
             <span class="post-pubtime">
               <i class="iconfont icon-updatetime mr-10" title="Update time"></i>
-              2024-06-25 15:42:04
+              2024-06-26 10:19:43
             </span>
             
                   <span class="post-tags">
                     <i class="iconfont icon-tags mr-10" title="Tags"></i>
                     
                     <span class="span--tag mr-8">
-                      <a href="/tags/%E5%AE%89%E8%A3%85%E6%94%BB%E7%95%A5/" title="安装攻略">
-                        #安装攻略
+                      <a href="/tags/%E6%95%B0%E6%8D%AE%E5%BA%93/" title="数据库">
+                        #数据库
                       </a>
                     </span>
                     
                     <span class="span--tag mr-8">
-                      <a href="/tags/haproxy/" title="haproxy">
-                        #haproxy
+                      <a href="/tags/mysql/" title="mysql">
+                        #mysql
+                      </a>
+                    </span>
+                    
+                    <span class="span--tag mr-8">
+                      <a href="/tags/mybatis-plus/" title="mybatis-plus">
+                        #mybatis-plus
                       </a>
                     </span>
                     
@@ -238,11 +397,6 @@
               
           </div>
           <div class="post-foot-prev">
-            
-              <a href="/2024/06/26/MybatisPlus%E4%B8%ADQueryWrapper%E5%B8%B8%E7%94%A8%E6%96%B9%E6%B3%95/" target="_self">
-                <span>Next</span>
-                <i class="iconfont icon-chevronright"></i>
-              </a>
             
           </div>
         </div>
@@ -256,7 +410,7 @@
     <div class="title">Contents</div>
     <div class="catalog-content">
       
-        <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#1-%E4%B8%8B%E8%BD%BD"><span class="toc-text">1.下载</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#2-%E8%A7%A3%E5%8E%8B"><span class="toc-text">2.解压</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#3-%E5%AE%89%E8%A3%85"><span class="toc-text">3.安装</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#4-%E9%85%8D%E7%BD%AE"><span class="toc-text">4.配置</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#5-%E8%BF%90%E8%A1%8C"><span class="toc-text">5.运行</span></a></li></ol>
+        <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#QueryWrapper%E5%B8%B8%E7%94%A8%E6%96%B9%E6%B3%95%E5%88%97%E8%A1%A8"><span class="toc-text">QueryWrapper常用方法列表</span></a></li></ol>
       
     </div>
   </div>
@@ -557,12 +711,12 @@
       </a>
       <div class="share-content hidden">
         
-          <a class="share-item" href="https://twitter.com/intent/tweet?text=' + Haproxy%E5%AE%89%E8%A3%85 + '&url=' + https%3A%2F%2Fhyygavin1990.github.io%2F2024%2F06%2F25%2FHaproxy%25E5%25AE%2589%25E8%25A3%2585%2F + '" target="_blank" title="Twitter">
+          <a class="share-item" href="https://twitter.com/intent/tweet?text=' + MybatisPlus%E4%B8%ADQueryWrapper%E5%B8%B8%E7%94%A8%E6%96%B9%E6%B3%95 + '&url=' + https%3A%2F%2Fhyygavin1990.github.io%2F2024%2F06%2F26%2FMybatisPlus%25E4%25B8%25ADQueryWrapper%25E5%25B8%25B8%25E7%2594%25A8%25E6%2596%25B9%25E6%25B3%2595%2F + '" target="_blank" title="Twitter">
             <i class="iconfont icon-twitter"></i>
           </a>
         
         
-          <a class="share-item" href="https://www.facebook.com/sharer.php?u=https://hyygavin1990.github.io/2024/06/25/Haproxy%E5%AE%89%E8%A3%85/" target="_blank" title="Facebook">
+          <a class="share-item" href="https://www.facebook.com/sharer.php?u=https://hyygavin1990.github.io/2024/06/26/MybatisPlus%E4%B8%ADQueryWrapper%E5%B8%B8%E7%94%A8%E6%96%B9%E6%B3%95/" target="_blank" title="Facebook">
             <i class="iconfont icon-facebooksquare"></i>
           </a>
         
