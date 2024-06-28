@@ -13,7 +13,7 @@
   
   <title>
     
-      Linux常用命令 
+      docker私有harbor安装说明 
       
       
       |
@@ -163,19 +163,25 @@
   <!-- 文章内容页 url形式：https://yoursite/文章标题/ -->
   <div class="container post-details" id="post-details">
     <div class="post-content">
-      <div class="post-title">Linux常用命令</div>
+      <div class="post-title">docker私有harbor安装说明</div>
       <div class="post-attach">
         <span class="post-pubtime">
           <i class="iconfont icon-updatetime mr-10" title="Update time"></i>
-          2024-06-25 17:26:03
+          2024-06-28 12:20:04
         </span>
         
               <span class="post-tags">
                 <i class="iconfont icon-tags mr-10" title="Tags"></i>
                 
                 <span class="span--tag mr-8">
-                  <a href="/tags/Linux/" title="Linux">
-                    #Linux
+                  <a href="/tags/%E5%AE%89%E8%A3%85%E6%94%BB%E7%95%A5/" title="安装攻略">
+                    #安装攻略
+                  </a>
+                </span>
+                
+                <span class="span--tag mr-8">
+                  <a href="/tags/docker/" title="docker">
+                    #docker
                   </a>
                 </span>
                 
@@ -183,21 +189,44 @@
           
       </div>
       <div class="markdown-body">
-        <h1 id="1-防火墙命令"><a href="#1-防火墙命令" class="headerlink" title="1.防火墙命令"></a>1.防火墙命令</h1><figure class="highlight shell"><table><tr><td class="code"><pre><span class="line"><span class="meta prompt_"># </span><span class="language-bash">centos7</span></span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">查看已经开放的端口</span></span><br><span class="line">firewall-cmd --list-ports</span><br><span class="line"><span class="meta prompt_"></span></span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">开启单个端口</span></span><br><span class="line">firewall-cmd --zone=public --add-port=7891/tcp --permanent</span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">开启多个端口</span></span><br><span class="line">firewall-cmd --zone=public --add-port=9010-9059/tcp --permanent</span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">删除单个端口</span></span><br><span class="line">firewall-cmd --zone=public --remove-port=80/tcp --permanent</span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">删除多个端口</span></span><br><span class="line">firewall-cmd --zone=public --remove-port=9010-9059/tcp --permanent</span><br><span class="line"><span class="meta prompt_"></span></span><br><span class="line"><span class="meta prompt_"></span></span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">增加rich-rules</span></span><br><span class="line">firewall-cmd --permanent --add-rich-rule=&quot;rule family=&quot;ipv4&quot; source address=&quot;192.168.2.34&quot; port protocol=&quot;tcp&quot; port=&quot;9876&quot; accept&quot;</span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">删除rich-rules</span></span><br><span class="line">firewall-cmd --permanent --remove-rich-rule=&quot;rule family=&quot;ipv4&quot; source address=&quot;192.168.2.30&quot; port protocol=&quot;tcp&quot; port=&quot;9876&quot; accept&quot;</span><br><span class="line"><span class="meta prompt_"></span></span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">重启firewall，上述修改之后必须要执行reload才能生效</span></span><br><span class="line">firewall-cmd --reload </span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">停止firewall</span></span><br><span class="line">systemctl stop firewalld.service </span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">禁止firewall开机启动</span></span><br><span class="line">systemctl disable firewalld.service </span><br><span class="line"><span class="meta prompt_"></span></span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">centos6</span></span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">开启单个端口</span></span><br><span class="line">/sbin/iptables -I INPUT -p tcp --dport 80 -j ACCEPT</span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">保存规则</span></span><br><span class="line">/etc/rc.d/init.d/iptables save</span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">查看打开的端口</span></span><br><span class="line">/etc/init.d/iptables status</span><br><span class="line"><span class="meta prompt_"></span></span><br><span class="line"><span class="meta prompt_">#</span><span class="language-bash">ubuntu 后续补充</span></span><br><span class="line"></span><br></pre></td></tr></table></figure>
-
-<h1 id="2-压缩命令"><a href="#2-压缩命令" class="headerlink" title="2.压缩命令"></a>2.压缩命令</h1><figure class="highlight shell"><table><tr><td class="code"><pre><span class="line"><span class="meta prompt_"># </span><span class="language-bash">将<span class="built_in">test</span>目录里所有的文件打包成test.tar</span> </span><br><span class="line">tar -cvf test.tar ./test</span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">解压tar</span></span><br><span class="line">tar -xvf test.tar</span><br><span class="line"><span class="meta prompt_"></span></span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">对<span class="built_in">test</span>目录先生成一个tar压缩包然后使用gzip压缩，生成一个gzip压缩过的包，命名为test.tar.gz</span></span><br><span class="line">tar -czf test.tar.gz ./test</span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">解压tar.gz</span></span><br><span class="line">tar -xzvf test.tar.gz</span><br><span class="line"><span class="meta prompt_"> </span></span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">对<span class="built_in">test</span>目录先生成一个tar压缩包然后使用bzip2压缩，生成一个bzip2压缩过的包，命名为test.tar.bz2</span></span><br><span class="line">tar -cjf test.tar.bz2 ./test</span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">解压 tar.bz2</span></span><br><span class="line">tar -xjvf test.tar.bz2 </span><br><span class="line"><span class="meta prompt_"></span></span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">将<span class="built_in">test</span>目录压缩为zip包，注意加上-r,表示递归</span></span><br><span class="line">zip -r test.zip ./test</span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">解压zip</span></span><br><span class="line">unzip test.zip</span><br><span class="line"></span><br><span class="line"></span><br></pre></td></tr></table></figure>
-
-<h1 id="3-curl-命令"><a href="#3-curl-命令" class="headerlink" title="3.curl 命令"></a>3.curl 命令</h1><figure class="highlight shell"><table><tr><td class="code"><pre><span class="line"><span class="meta prompt_"># </span><span class="language-bash">普通</span></span><br><span class="line">curl 地址</span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">params方式</span></span><br><span class="line">curl -d &#x27;a=aaaa&amp;b=xxxx&#x27; 地址</span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">json方式请求</span></span><br><span class="line">curl &#x27;http://localhost:8080/cnd_inke/qc/v2/inke&#x27; \</span><br><span class="line">-H &quot;Content-Type:application/json&quot; \</span><br><span class="line">-H &#x27;Authorization:bearer&#x27; \</span><br><span class="line">-X POST \</span><br><span class="line">-d &#x27;&#123;&quot;Id&quot;:&quot;12330245&quot;,&quot;visitTimes&quot;:1,&quot;docType&quot;:&quot;散文&quot;,&quot;docId&quot;:&quot;36e5854f5f0e4f80b7ccc6c52c063243&quot;&#125;&#x27;</span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">下载</span></span><br><span class="line">curl -L 下载地址 -o 目标目录</span><br><span class="line"></span><br><span class="line"></span><br></pre></td></tr></table></figure>
-
-<h1 id="4-内网复制"><a href="#4-内网复制" class="headerlink" title="4.内网复制"></a>4.内网复制</h1><figure class="highlight shell"><table><tr><td class="code"><pre><span class="line"><span class="meta prompt_"># </span><span class="language-bash">sshpass插件，无需手动输入密码</span></span><br><span class="line">yum install sshpass -y</span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">复制远程服务器数据到本地</span></span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">无需输入密码</span></span><br><span class="line">sshpass -p 密码 scp -o StrictHostKeyChecking=no -r -p -P ssh服务端口 root@源服务器IP:需要拷贝的文件或者目录  本机文件或者目录地址</span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">需要输入密码</span></span><br><span class="line">scp -o StrictHostKeyChecking=no -r -p -P ssh服务端口 root@源服务器IP:需要拷贝的文件或者目录  本机文件或者目录地址</span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">复制本地服务器数据到远程</span></span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">无需输入密码</span></span><br><span class="line">sshpass -p 密码 scp -o StrictHostKeyChecking=no -r -p -P ssh服务端口 本机文件或者目录地址 root@目标服务器IP:需要拷贝的文件或者目录</span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">需要输入密码</span></span><br><span class="line">scp -o StrictHostKeyChecking=no -r -p -P ssh服务端口 root@源服务器IP:需要拷贝的文件或者目录  本机文件或者目录地址</span><br></pre></td></tr></table></figure>
-
+        <h2 id="一、生成SSL证书"><a href="#一、生成SSL证书" class="headerlink" title="一、生成SSL证书"></a>一、生成SSL证书</h2><p>Docker在登陆镜像仓库时默认采用https方式，建议为镜像仓库申请域名并为其生成SSL证书。Docker也可以通过http方式登陆镜像仓库，但需要设置选项--insecure-registry</p>
+<p>生成过程参考<a target="_blank" rel="noopener" href="https://github.com/goharbor/harbor/blob/master/docs/configure_https.md">harbor&#x2F;configure_https.md at master · goharbor&#x2F;harbor</a></p>
+<ol>
+<li>申请域名指向harbor镜像仓库所在服务器IP地址，这里以code.data-win.cn为例</li>
+<li>安装OepnSSL <figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">yum install openssl</span><br></pre></td></tr></table></figure></li>
+<li>新建文件夹&#x2F;mydata&#x2F;certs&#x2F;用于保存SSL证书 <figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="built_in">cd</span> /mydata/certs</span><br></pre></td></tr></table></figure></li>
+<li>获取证书授权： <figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">openssl genrsa -out ca.key 4096</span><br><span class="line">openssl req -x509 -new -nodes -sha512 -days 3650 -subj <span class="string">&quot;/C=TW/ST=Taipei/L=Taipei/O=example/OU=Personal/CN=data-win.cn&quot;</span> -key ca.key -out ca.crt</span><br></pre></td></tr></table></figure></li>
+<li>创建证书私钥 <figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">openssl genrsa -out data-win.cn.key 4096</span><br></pre></td></tr></table></figure></li>
+<li>生成证书签名请求 <figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">openssl req -sha512 -new -subj <span class="string">&quot;/C=TW/ST=Taipei/L=Taipei/O=example/OU=Personal/CN=data-win.cn&quot;</span> -key data-win.cn.key -out data-win.cn.csr</span><br></pre></td></tr></table></figure></li>
+<li>创建v3.ext文件 <figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="built_in">cat</span> &gt; v3.ext &lt;&lt;-<span class="string">EOF</span></span><br><span class="line"><span class="string">authorityKeyIdentifier=keyid,issuer</span></span><br><span class="line"><span class="string">basicConstraints=CA:FALSE</span></span><br><span class="line"><span class="string">keyUsage = digitalSignature, nonRepudiation, keyEncipherment, dataEncipherment</span></span><br><span class="line"><span class="string">extendedKeyUsage = serverAuth </span></span><br><span class="line"><span class="string">subjectAltName = @alt_names</span></span><br><span class="line"><span class="string">[alt_names]</span></span><br><span class="line"><span class="string">DNS.1=data-win.cn</span></span><br><span class="line"><span class="string">DNS.2=data-win</span></span><br><span class="line"><span class="string">DNS.3=code.data-win.cn</span></span><br><span class="line"><span class="string">EOF</span></span><br></pre></td></tr></table></figure></li>
+<li>生成证书 <figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">openssl x509 -req -sha512 -days 3650 -extfile v3.ext -CA ca.crt -CAkey ca.key -CAcreateserial -<span class="keyword">in</span> data-win.cn.csr -out data-win.cn.crt</span><br></pre></td></tr></table></figure></li>
+</ol>
+<h2 id="二、搭建镜像仓库"><a href="#二、搭建镜像仓库" class="headerlink" title="二、搭建镜像仓库"></a>二、搭建镜像仓库</h2><p>参考<a target="_blank" rel="noopener" href="https://github.com/goharbor/harbor/blob/master/docs/installation_guide.md">harbor&#x2F;installation_guide.md at master · goharbor&#x2F;harbor</a></p>
+<ol>
+<li>安装符合Harbor版本要求的docker环境和docker-compose工具（自行安装）</li>
+<li>下载<a target="_blank" rel="noopener" href="https://storage.googleapis.com/harbor-releases/release-1.8.0/harbor-offline-installer-v1.8.0.tgz">harbor v1.8.0离线安装包</a>并解压</li>
+<li>编辑harbor.yml，修改如下字段的值： <figure class="highlight yml"><table><tr><td class="code"><pre><span class="line"><span class="comment"># harbor服务器域名</span></span><br><span class="line"><span class="attr">hostname:</span> <span class="string">code.data-win.cn</span></span><br><span class="line"><span class="comment"># http related config</span></span><br><span class="line"><span class="attr">http:</span></span><br><span class="line">  <span class="comment"># port for http, default is 80. If https enabled, this port will redirect to https port</span></span><br><span class="line">  <span class="attr">port:</span> <span class="number">80</span></span><br><span class="line"><span class="comment"># 开启https访问</span></span><br><span class="line"><span class="attr">https:</span></span><br><span class="line"><span class="comment">#   # harbor的https端口, default is 443，这里修改成11443，防止被人攻击</span></span><br><span class="line">  <span class="attr">port:</span> <span class="number">11443</span></span><br><span class="line"><span class="comment">#   # SSL证书路径</span></span><br><span class="line">  <span class="attr">certificate:</span> <span class="string">/mydata/certs/data-win.cn.crt</span></span><br><span class="line">  <span class="attr">private_key:</span> <span class="string">/mydata/certs/data-win.cn.key</span></span><br><span class="line"><span class="comment"># harbor的admin账号初始密码</span></span><br><span class="line"><span class="attr">harbor_admin_password:</span> <span class="string">admin账号初始密码</span></span><br><span class="line"><span class="comment"># Harbor DB configuration</span></span><br><span class="line"><span class="attr">database:</span></span><br><span class="line">  <span class="comment"># The password for the root user of Harbor DB. Change this before any production use.</span></span><br><span class="line">  <span class="attr">password:</span> <span class="string">数据库的初始密码</span></span><br></pre></td></tr></table></figure></li>
+<li>安装harbor（如果直接运行“.&#x2F;install.sh”可能因为缺少环境变量而找不到docker-compose,参见<a target="_blank" rel="noopener" href="https://github.com/goharbor/harbor/issues/2317">Need to install docker-compose(1.7.1+) by yourself first and run this script again. · Issue #2317 · goharbor&#x2F;harbor</a>） <figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">sudo -E <span class="built_in">env</span> <span class="string">&quot;PATH=<span class="variable">$PATH</span>&quot;</span> ./install.sh</span><br></pre></td></tr></table></figure></li>
+<li>启动harbor <figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">docker-compose up -d</span><br></pre></td></tr></table></figure>
+至此已经可以通过<a target="_blank" rel="noopener" href="https://code.data-win.cn:11443/">https://code.data-win.cn:11443</a> 使用admin账户登陆镜像仓库。如果Harbor已安装运行后需要调整harbor.yml配置，按照如下步骤进行：</li>
+<li>停止harbor</li>
+<li>编辑harbor.yml配置文件</li>
+<li>运行.&#x2F;prepare根据harbor.yml生成新的docker-compose.yml</li>
+<li>启动harbor</li>
+</ol>
+<h2 id="三、从Harbor拉取镜像"><a href="#三、从Harbor拉取镜像" class="headerlink" title="三、从Harbor拉取镜像"></a>三、从Harbor拉取镜像</h2><p>参考<a target="_blank" rel="noopener" href="https://github.com/goharbor/harbor/blob/master/docs/configure_https.md">harbor&#x2F;configure_https.md at master · goharbor&#x2F;harbor</a></p>
+<ol>
+<li>将已生成的SSL证书转换为Docker可识别的.cert格式 <figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">openssl x509 -inform PEM -<span class="keyword">in</span> data-win.cn.crt -out data-win.cn.cert</span><br></pre></td></tr></table></figure></li>
+<li>在需要拉取镜像的服务器&#x2F;etc&#x2F;docker&#x2F;下新建目录&#x2F;certs.d&#x2F;code.data-win.cn:11443&#x2F; 并将已生成的如下证书拷贝到该目录下 <figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">ca.crt</span><br><span class="line">data-win.cn.crt</span><br><span class="line">data-win.cn.cert</span><br></pre></td></tr></table></figure></li>
+<li>登陆镜像仓库： <figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">docker login -u <span class="string">&#x27;username&#x27;</span> -p <span class="string">&#x27;password&#x27;</span> code.data-win.cn:11443</span><br></pre></td></tr></table></figure></li>
+</ol>
 
       </div>
       
         <div class="prev-or-next">
           <div class="post-foot-next">
             
-              <a href="/2024/06/25/docker%E7%A7%81%E6%9C%89harbor%E5%AE%89%E8%A3%85%E8%AF%B4%E6%98%8E/" target="_self">
+              <a href="/2024/06/25/Redis%E5%AE%89%E8%A3%85%E8%AF%B4%E6%98%8E/" target="_self">
                 <i class="iconfont icon-chevronleft"></i>
                 <span>Prev</span>
               </a>
@@ -206,15 +235,21 @@
           <div class="post-attach">
             <span class="post-pubtime">
               <i class="iconfont icon-updatetime mr-10" title="Update time"></i>
-              2024-06-25 17:26:03
+              2024-06-28 12:20:04
             </span>
             
                   <span class="post-tags">
                     <i class="iconfont icon-tags mr-10" title="Tags"></i>
                     
                     <span class="span--tag mr-8">
-                      <a href="/tags/Linux/" title="Linux">
-                        #Linux
+                      <a href="/tags/%E5%AE%89%E8%A3%85%E6%94%BB%E7%95%A5/" title="安装攻略">
+                        #安装攻略
+                      </a>
+                    </span>
+                    
+                    <span class="span--tag mr-8">
+                      <a href="/tags/docker/" title="docker">
+                        #docker
                       </a>
                     </span>
                     
@@ -223,7 +258,7 @@
           </div>
           <div class="post-foot-prev">
             
-              <a href="/2024/06/25/Haproxy%E5%AE%89%E8%A3%85/" target="_self">
+              <a href="/2024/06/25/Linux%E5%B8%B8%E7%94%A8%E5%91%BD%E4%BB%A4/" target="_self">
                 <span>Next</span>
                 <i class="iconfont icon-chevronright"></i>
               </a>
@@ -240,7 +275,7 @@
     <div class="title">Contents</div>
     <div class="catalog-content">
       
-        <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#1-%E9%98%B2%E7%81%AB%E5%A2%99%E5%91%BD%E4%BB%A4"><span class="toc-text">1.防火墙命令</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#2-%E5%8E%8B%E7%BC%A9%E5%91%BD%E4%BB%A4"><span class="toc-text">2.压缩命令</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#3-curl-%E5%91%BD%E4%BB%A4"><span class="toc-text">3.curl 命令</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#4-%E5%86%85%E7%BD%91%E5%A4%8D%E5%88%B6"><span class="toc-text">4.内网复制</span></a></li></ol>
+        <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%B8%80%E3%80%81%E7%94%9F%E6%88%90SSL%E8%AF%81%E4%B9%A6"><span class="toc-text">一、生成SSL证书</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%BA%8C%E3%80%81%E6%90%AD%E5%BB%BA%E9%95%9C%E5%83%8F%E4%BB%93%E5%BA%93"><span class="toc-text">二、搭建镜像仓库</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%B8%89%E3%80%81%E4%BB%8EHarbor%E6%8B%89%E5%8F%96%E9%95%9C%E5%83%8F"><span class="toc-text">三、从Harbor拉取镜像</span></a></li></ol>
       
     </div>
   </div>
@@ -541,12 +576,12 @@
       </a>
       <div class="share-content hidden">
         
-          <a class="share-item" href="https://twitter.com/intent/tweet?text=' + Linux%E5%B8%B8%E7%94%A8%E5%91%BD%E4%BB%A4 + '&url=' + https%3A%2F%2Fhyygavin1990.github.io%2F2024%2F06%2F25%2FLinux%25E5%25B8%25B8%25E7%2594%25A8%25E5%2591%25BD%25E4%25BB%25A4%2F + '" target="_blank" title="Twitter">
+          <a class="share-item" href="https://twitter.com/intent/tweet?text=' + docker%E7%A7%81%E6%9C%89harbor%E5%AE%89%E8%A3%85%E8%AF%B4%E6%98%8E + '&url=' + https%3A%2F%2Fhyygavin1990.github.io%2F2024%2F06%2F25%2Fdocker%25E7%25A7%2581%25E6%259C%2589harbor%25E5%25AE%2589%25E8%25A3%2585%25E8%25AF%25B4%25E6%2598%258E%2F + '" target="_blank" title="Twitter">
             <i class="iconfont icon-twitter"></i>
           </a>
         
         
-          <a class="share-item" href="https://www.facebook.com/sharer.php?u=https://hyygavin1990.github.io/2024/06/25/Linux%E5%B8%B8%E7%94%A8%E5%91%BD%E4%BB%A4/" target="_blank" title="Facebook">
+          <a class="share-item" href="https://www.facebook.com/sharer.php?u=https://hyygavin1990.github.io/2024/06/25/docker%E7%A7%81%E6%9C%89harbor%E5%AE%89%E8%A3%85%E8%AF%B4%E6%98%8E/" target="_blank" title="Facebook">
             <i class="iconfont icon-facebooksquare"></i>
           </a>
         
