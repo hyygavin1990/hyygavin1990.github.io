@@ -167,17 +167,11 @@
       <div class="post-attach">
         <span class="post-pubtime">
           <i class="iconfont icon-updatetime mr-10" title="Update time"></i>
-          2024-06-26 09:58:40
+          2024-07-01 11:20:01
         </span>
         
               <span class="post-tags">
                 <i class="iconfont icon-tags mr-10" title="Tags"></i>
-                
-                <span class="span--tag mr-8">
-                  <a href="/tags/%E5%AE%89%E8%A3%85%E6%94%BB%E7%95%A5/" title="安装攻略">
-                    #安装攻略
-                  </a>
-                </span>
                 
                 <span class="span--tag mr-8">
                   <a href="/tags/%E6%95%B0%E6%8D%AE%E5%BA%93/" title="数据库">
@@ -191,11 +185,17 @@
                   </a>
                 </span>
                 
+                <span class="span--tag mr-8">
+                  <a href="/tags/%E5%AE%89%E8%A3%85%E6%94%BB%E7%95%A5/" title="安装攻略">
+                    #安装攻略
+                  </a>
+                </span>
+                
               </span>
           
       </div>
       <div class="markdown-body">
-        <h3 id="卸载之前的版本"><a href="#卸载之前的版本" class="headerlink" title="卸载之前的版本"></a>卸载之前的版本</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 查看yum是否安装过mysql</span></span><br><span class="line">yum list installed mysql*</span><br><span class="line"></span><br><span class="line">mysql-community-client.x86_64               5.7.16-1.el7               installed</span><br><span class="line">mysql-community-common.x86_64               5.7.16-1.el7               installed</span><br><span class="line">mysql-community-libs.x86_64                 5.7.16-1.el7               installed</span><br><span class="line">mysql-community-server.x86_64               5.7.16-1.el7               installed</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">yum remove mysql-community-client mysql-community-common mysql-community-libs mysql-community-server</span><br><span class="line"><span class="built_in">rm</span> -rf /var/lib/mysql</span><br><span class="line"><span class="built_in">rm</span> /etc/my.cnf</span><br><span class="line"></span><br><span class="line">whereis mysql</span><br><span class="line">mysql: /usr/bin/mysql /usr/lib64/mysql /usr/local/mysql /usr/share/mysql /usr/share/man/man1/mysql.1.gz</span><br><span class="line"><span class="comment">#删除上面的文件夹</span></span><br><span class="line"><span class="built_in">rm</span> -rf /usr/share/mysql   ......</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+        <h3 id="卸载之前的版本"><a href="#卸载之前的版本" class="headerlink" title="卸载之前的版本"></a>卸载之前的版本</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 卸载默认的mariadb</span></span><br><span class="line">yum list installed mariadb*</span><br><span class="line"></span><br><span class="line">mariadb-libs.x86_64                                                                                1:5.5.68-1.el7                                                                                 @anaconda</span><br><span class="line">yum remove mariadb-libs.x86_64</span><br><span class="line">whereis mariadb</span><br><span class="line">mariadb: ....</span><br><span class="line"><span class="comment">#删除上面的文件夹</span></span><br><span class="line"><span class="built_in">rm</span> -rf ....</span><br><span class="line"></span><br><span class="line"><span class="comment"># 查看yum是否安装过mysql</span></span><br><span class="line">yum list installed mysql*</span><br><span class="line"></span><br><span class="line">mysql-community-client.x86_64               5.7.16-1.el7               installed</span><br><span class="line">mysql-community-common.x86_64               5.7.16-1.el7               installed</span><br><span class="line">mysql-community-libs.x86_64                 5.7.16-1.el7               installed</span><br><span class="line">mysql-community-server.x86_64               5.7.16-1.el7               installed</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">yum remove mysql-community-client mysql-community-common mysql-community-libs mysql-community-server</span><br><span class="line"><span class="built_in">rm</span> -rf /var/lib/mysql</span><br><span class="line"><span class="built_in">rm</span> /etc/my.cnf</span><br><span class="line"></span><br><span class="line">whereis mysql</span><br><span class="line">mysql: /usr/bin/mysql /usr/lib64/mysql /usr/local/mysql /usr/share/mysql /usr/share/man/man1/mysql.1.gz</span><br><span class="line"><span class="comment">#删除上面的文件夹</span></span><br><span class="line"><span class="built_in">rm</span> -rf /usr/share/mysql   ......</span><br><span class="line"></span><br></pre></td></tr></table></figure>
 
 
 <h3 id="安装"><a href="#安装" class="headerlink" title="安装"></a>安装</h3><p>下载</p>
@@ -208,21 +208,20 @@
         <div class="prev-or-next">
           <div class="post-foot-next">
             
+              <a href="/2024/06/25/Redis%E5%AE%89%E8%A3%85%E8%AF%B4%E6%98%8E/" target="_self">
+                <i class="iconfont icon-chevronleft"></i>
+                <span>Prev</span>
+              </a>
+            
           </div>
           <div class="post-attach">
             <span class="post-pubtime">
               <i class="iconfont icon-updatetime mr-10" title="Update time"></i>
-              2024-06-26 09:58:40
+              2024-07-01 11:20:01
             </span>
             
                   <span class="post-tags">
                     <i class="iconfont icon-tags mr-10" title="Tags"></i>
-                    
-                    <span class="span--tag mr-8">
-                      <a href="/tags/%E5%AE%89%E8%A3%85%E6%94%BB%E7%95%A5/" title="安装攻略">
-                        #安装攻略
-                      </a>
-                    </span>
                     
                     <span class="span--tag mr-8">
                       <a href="/tags/%E6%95%B0%E6%8D%AE%E5%BA%93/" title="数据库">
@@ -236,12 +235,18 @@
                       </a>
                     </span>
                     
+                    <span class="span--tag mr-8">
+                      <a href="/tags/%E5%AE%89%E8%A3%85%E6%94%BB%E7%95%A5/" title="安装攻略">
+                        #安装攻略
+                      </a>
+                    </span>
+                    
                   </span>
               
           </div>
           <div class="post-foot-prev">
             
-              <a href="/2024/06/25/Redis%E5%AE%89%E8%A3%85%E8%AF%B4%E6%98%8E/" target="_self">
+              <a href="/2024/06/25/docker%E7%A7%81%E6%9C%89harbor%E5%AE%89%E8%A3%85%E8%AF%B4%E6%98%8E/" target="_self">
                 <span>Next</span>
                 <i class="iconfont icon-chevronright"></i>
               </a>
