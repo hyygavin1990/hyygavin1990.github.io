@@ -13,7 +13,7 @@
   
   <title>
     
-      Haproxy安装 
+      docker安装Java8版本的jenkins 
       
       
       |
@@ -163,25 +163,31 @@
   <!-- 文章内容页 url形式：https://yoursite/文章标题/ -->
   <div class="container post-details" id="post-details">
     <div class="post-content">
-      <div class="post-title">Haproxy安装</div>
+      <div class="post-title">docker安装Java8版本的jenkins</div>
       <div class="post-attach">
         <span class="post-pubtime">
           <i class="iconfont icon-updatetime mr-10" title="Update time"></i>
-          2024-06-25 15:42:04
+          2024-08-22 09:45:01
         </span>
         
               <span class="post-tags">
                 <i class="iconfont icon-tags mr-10" title="Tags"></i>
                 
                 <span class="span--tag mr-8">
-                  <a href="/tags/%E5%AE%89%E8%A3%85%E6%94%BB%E7%95%A5/" title="安装攻略">
-                    #安装攻略
+                  <a href="/tags/docker/" title="docker">
+                    #docker
                   </a>
                 </span>
                 
                 <span class="span--tag mr-8">
-                  <a href="/tags/haproxy/" title="haproxy">
-                    #haproxy
+                  <a href="/tags/centos/" title="centos">
+                    #centos
+                  </a>
+                </span>
+                
+                <span class="span--tag mr-8">
+                  <a href="/tags/jenkins/" title="jenkins">
+                    #jenkins
                   </a>
                 </span>
                 
@@ -189,25 +195,41 @@
           
       </div>
       <div class="markdown-body">
-        <h1 id="1-下载"><a href="#1-下载" class="headerlink" title="1.下载"></a>1.下载</h1><figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">wget http://www.haproxy.org/download/1.8/src/haproxy-1.8.14.tar.gz</span><br></pre></td></tr></table></figure>
+        <p>吐槽：由于老项目大部分打包环境必须要是java8，但是jenkins最新的版本都java11以上，java8版本的安装太麻烦</p>
+<h1 id="1-创建工作目录并运行容器"><a href="#1-创建工作目录并运行容器" class="headerlink" title="1.创建工作目录并运行容器"></a>1.创建工作目录并运行容器</h1><figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">mkdir -p /mydata/jenkins</span><br><span class="line">rm -rf /mydata/jenkins/**</span><br><span class="line">chmod -R 777 /mydata/jenkins</span><br><span class="line">docker run -d \</span><br><span class="line">    -p 9990:8080 \</span><br><span class="line">    -p 50000:50000 \</span><br><span class="line">    -v /mydata/jenkins:/var/jenkins_home \</span><br><span class="line">    -v /etc/localtime:/etc/localtime \</span><br><span class="line">    --restart=always \</span><br><span class="line">    --name=jenkins \</span><br><span class="line">    jenkins/jenkins:2.176.1</span><br><span class="line"></span><br><span class="line"></span><br></pre></td></tr></table></figure>
 
-<h1 id="2-解压"><a href="#2-解压" class="headerlink" title="2.解压"></a>2.解压</h1><figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">tar -zxvf haproxy-1.8.14.tar.gz</span><br><span class="line">cd haproxy-1.8.14</span><br></pre></td></tr></table></figure>
+<p>ps：如果网速太慢，或者离线环境，可以事先下载好我备份在网盘镜像tar包，地址是<a target="_blank" rel="noopener" href="https://pan.baidu.com/s/1U1N3NX8G-uXAg04syhe8zw?pwd=wyda%EF%BC%8C%E6%9C%89%E4%B8%A4%E4%B8%AA%E7%89%88%E6%9C%AC%E5%A6%82%E4%B8%8B">https://pan.baidu.com/s/1U1N3NX8G-uXAg04syhe8zw?pwd=wyda，有两个版本如下</a></p>
+<p><img src="/assets/jenkins/1724227098499.jpg" alt="image-1724227098499"><br>选择一个，2.176界面稍微好看点，自行选择</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line"><span class="meta prompt_"># </span><span class="language-bash">这里选择2.176.1</span></span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">1、手动导入jenkins镜像到本地docker</span></span><br><span class="line">docker load &lt; jenkins_2.176.1.tar</span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">2、导入完毕之后再执行上面的docker run命令</span></span><br><span class="line"></span><br><span class="line"></span><br></pre></td></tr></table></figure>
 
-<h1 id="3-安装"><a href="#3-安装" class="headerlink" title="3.安装"></a>3.安装</h1><figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">make TARGET=linux2628 ARCH=x86_64 PREFIX=/mydata/haproxy</span><br><span class="line">make install PREFIX=/mydata/haproxy</span><br></pre></td></tr></table></figure>
-<p>参数说明<br>TARGET&#x3D;linux26 #内核版本，使用uname -r查看内核，如：2.6.18-371.el5，此时该参数就为linux26；kernel 大于2.6.28的<br>用：TARGET&#x3D;linux2628<br>ARCH&#x3D;x86_64 #系统位数<br>PREFIX&#x3D;&#x2F;usr&#x2F;local&#x2F;haprpxy  #&#x2F;usr&#x2F;local&#x2F;haprpxy为haprpxy安装路径</p>
-<h1 id="4-配置"><a href="#4-配置" class="headerlink" title="4.配置"></a>4.配置</h1><figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">cd /home/haproxy #进入haproxy安装目录</span><br><span class="line">touch haproxy.cfg #创建配置文件</span><br><span class="line">vi haproxy.cfg #编辑配置文件</span><br></pre></td></tr></table></figure>
 
-<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line"><span class="meta prompt_"># </span><span class="language-bash">haproxy.cfg设置为单线程模式，配置如下</span></span><br><span class="line">global</span><br><span class="line">    log 127.0.0.1 local1</span><br><span class="line">    maxconn 65000             #最大连接数</span><br><span class="line">    daemon                    #守护进程运行</span><br><span class="line">    nbproc 1                  #进程数量</span><br><span class="line"></span><br><span class="line">defaults</span><br><span class="line">    log     global</span><br><span class="line">    mode    http               #7层#默认的模式mode &#123;tcp|http|health&#125;,tcp是4层,http是7层,health只会返回OK</span><br><span class="line">    option  httplog            #http 日志格式</span><br><span class="line">    option  httpclose          #主动关闭http通道,HA-Proxy不支持keep-alive模式</span><br><span class="line">    option  redispatch         #serverId对应的服务器挂掉后,强制定向到其他健康的服务器</span><br><span class="line">    retries  3</span><br><span class="line">    maxconn 50000              #最大连接数</span><br><span class="line">    timeout http-request 10s</span><br><span class="line">    timeout queue  1m</span><br><span class="line">    timeout connect 10s</span><br><span class="line">    timeout client  1m</span><br><span class="line">    timeout server  1m</span><br><span class="line">    timeout http-keep-alive 10s</span><br><span class="line">    timeout check 10s</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">frontend main</span><br><span class="line">    bind *:9999             #监听地址</span><br><span class="line">    default_backend   my_webserver     #定义一个名为my_app前端部分。此处将对于的请求转发给后端</span><br><span class="line">    balance roundrobin     #负载均衡算法（#banlance roundrobin 轮询）</span><br><span class="line"></span><br><span class="line">backend my_webserver</span><br><span class="line">    mode http</span><br><span class="line">    option  forwardfor</span><br><span class="line">    balance roundrobin</span><br><span class="line">    cookie  SERVERID</span><br><span class="line">    option  httpchk GET /demo</span><br><span class="line">    server  web01 192.168.2.90:9000 cookie web01 check inter 2000 rise 3 fall 3 weight 3</span><br><span class="line">    server  web02 192.168.2.91:9000 cookie web02 check inter 2000 rise 3 fall 3 weight 3</span><br><span class="line">    server  web03 192.168.2.92:9000 cookie web03 check inter 2000 rise 3 fall 3 weight 3</span><br><span class="line">    server  web04 192.168.2.93:9000 cookie web04 check inter 2000 rise 3 fall 3 weight 3</span><br><span class="line">    server  web05 192.168.2.94:9000 cookie web05 check inter 2000 rise 3 fall 3 weight 3</span><br><span class="line">    server  web06 192.168.2.90:9001 cookie web06 check inter 2000 rise 3 fall 3 weight 3</span><br><span class="line">    server  web07 192.168.2.91:9001 cookie web07 check inter 2000 rise 3 fall 3 weight 3</span><br><span class="line">    server  web08 192.168.2.92:9001 cookie web08 check inter 2000 rise 3 fall 3 weight 3</span><br><span class="line">    server  web09 192.168.2.93:9001 cookie web09 check inter 2000 rise 3 fall 3 weight 3</span><br><span class="line">    server  web10 192.168.2.94:9001 cookie web10 check inter 2000 rise 3 fall 3 weight 3</span><br><span class="line"></span><br><span class="line">        </span><br></pre></td></tr></table></figure>
+<h1 id="2-安装jenkins"><a href="#2-安装jenkins" class="headerlink" title="2.安装jenkins"></a>2.安装jenkins</h1><h2 id="2-1-查看初始密码"><a href="#2-1-查看初始密码" class="headerlink" title="2.1 查看初始密码"></a>2.1 查看初始密码</h2><figure class="highlight shell"><table><tr><td class="code"><pre><span class="line"><span class="meta prompt_"># </span><span class="language-bash">1、查询初始的initialAdminPassword</span></span><br><span class="line">docker logs -f jenkins</span><br><span class="line"></span><br></pre></td></tr></table></figure>
 
-<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line"><span class="meta prompt_"># </span><span class="language-bash">haproxy.cfg设置为多线程模式，配置如下</span></span><br><span class="line">global</span><br><span class="line">    	log 127.0.0.1 local1</span><br><span class="line">    	maxconn 65000            #最大连接数</span><br><span class="line">    	ulimit-n 130019         	#设置每个进程的可用的最大文件描述符</span><br><span class="line">    	daemon                   #守护进程运行                 </span><br><span class="line">    	nbproc 8				#进程数量</span><br><span class="line">	    cpu-map 1 0</span><br><span class="line">	    cpu-map 2 1</span><br><span class="line">	    cpu-map 3 2</span><br><span class="line">	    cpu-map 4 3</span><br><span class="line">	    cpu-map 5 4</span><br><span class="line">	    cpu-map 6 5</span><br><span class="line">	    cpu-map 7 6</span><br><span class="line">	    cpu-map 8 7</span><br><span class="line">	    nbthread 5</span><br><span class="line"></span><br><span class="line">defaults</span><br><span class="line">        log     global</span><br><span class="line">        mode    http               #7层#默认的模式mode &#123;tcp|http|health&#125;,tcp是4层,http是7层,health只会返回OK</span><br><span class="line">        option  httplog            #http 日志格式</span><br><span class="line">        option  httpclose          #主动关闭http通道,HA-Proxy不支持keep-alive模式</span><br><span class="line">        option  redispatch         #serverId对应的服务器挂掉后,强制定向到其他健康的服务器</span><br><span class="line">        retries  3</span><br><span class="line">        maxconn 50000              #最大连接数</span><br><span class="line">        timeout http-request 10s</span><br><span class="line">        timeout queue  1m</span><br><span class="line">        timeout connect 10s</span><br><span class="line">        timeout client  1m</span><br><span class="line">        timeout server  1m</span><br><span class="line">        timeout http-keep-alive 30s</span><br><span class="line">        timeout check 10s</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">frontend main</span><br><span class="line">        bind *:9999             #监听地址</span><br><span class="line">        default_backend   my_webserver     #定义一个名为my_app前端部分。此处将对于的请求转发给后端</span><br><span class="line">        #balance roundrobin     #负载均衡算法（#banlance roundrobin 轮询）</span><br><span class="line"></span><br><span class="line">backend my_webserver</span><br><span class="line">        mode http</span><br><span class="line">        option  forwardfor</span><br><span class="line">        balance roundrobin</span><br><span class="line">        cookie  SERVERID</span><br><span class="line">        option  httpchk GET /test</span><br><span class="line">        server  web01 192.168.2.37:9000 cookie web01 check inter 2000 rise 3 fall 3 weight 3 # 这里全部都是gateway的地址</span><br><span class="line">        server  web02 192.168.2.38:9000 cookie web02 check inter 2000 rise 3 fall 3 weight 3</span><br><span class="line">        server  web03 192.168.2.38:9001 cookie web03 check inter 2000 rise 3 fall 3 weight 3</span><br><span class="line">        server  web06 192.168.2.40:9000 cookie web06 check inter 2000 rise 3 fall 3 weight 3</span><br><span class="line">        server  web07 192.168.2.40:9001 cookie web07 check inter 2000 rise 3 fall 3 weight 3</span><br><span class="line">        server  web08 192.168.2.41:9000 cookie web08 check inter 2000 rise 3 fall 3 weight 3</span><br><span class="line"></span><br></pre></td></tr></table></figure>
-<h1 id="5-运行"><a href="#5-运行" class="headerlink" title="5.运行"></a>5.运行</h1><figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">cd /mydata/haproxy</span><br><span class="line">./sbin/haproxy -f haproxy.cfg</span><br></pre></td></tr></table></figure>
+<p><img src="/assets/jenkins/1724227972610.jpg" alt="image-1724227972610"></p>
+<h2 id="2-1-跳过安装插件（重要，不然前面得全部重来！！！）"><a href="#2-1-跳过安装插件（重要，不然前面得全部重来！！！）" class="headerlink" title="2.1 跳过安装插件（重要，不然前面得全部重来！！！）"></a>2.1 跳过安装插件（重要，不然前面得全部重来！！！）</h2><p><img src="/assets/jenkins/1724228255213.jpg" alt="image-1724228255213"></p>
+<p><img src="/assets/jenkins/1724228332798.jpg" alt="image-1724228332798"></p>
+<p><img src="/assets/jenkins/1724228419123.jpg" alt="image-1724228419123"></p>
+<p><img src="/assets/jenkins/1724228450712.jpg" alt="image-1724228450712"></p>
+<p><img src="/assets/jenkins/1724228501083.jpg" alt="image-1724228501083"></p>
+<h1 id="3-覆盖原始的插件包"><a href="#3-覆盖原始的插件包" class="headerlink" title="3 覆盖原始的插件包"></a>3 覆盖原始的插件包</h1><figure class="highlight shell"><table><tr><td class="code"><pre><span class="line"><span class="meta prompt_"># </span><span class="language-bash">1、切换工作目录下的plugins</span></span><br><span class="line">cd /mydata/jenkins/plugins</span><br><span class="line"><span class="meta prompt_"></span></span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">2、将plugins_2.176.1.tar放入其中</span></span><br><span class="line">tar -xvf plugins_2.176.1.tar</span><br><span class="line">mv plugins/* ./</span><br><span class="line"><span class="meta prompt_"></span></span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">3、重启jenkins</span></span><br><span class="line">docker restart jenkins</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<p><img src="/assets/jenkins/1724229074266.jpg" alt="image-1724229074266"></p>
+<p><img src="/assets/jenkins/1724229128128.jpg" alt="image-1724229128128"></p>
+<p><img src="/assets/jenkins/1724229160882.jpg" alt="image-1724229160882"></p>
+<p><img src="/assets/jenkins/1724229276449.jpg" alt="image-1724229276449"></p>
+<h1 id="4-配置maven环境"><a href="#4-配置maven环境" class="headerlink" title="4 配置maven环境"></a>4 配置maven环境</h1><h2 id="4-1-下载maven包，放到指定位置"><a href="#4-1-下载maven包，放到指定位置" class="headerlink" title="4.1 下载maven包，放到指定位置"></a>4.1 下载maven包，放到指定位置</h2><p>下载maven包 <a target="_blank" rel="noopener" href="https://repo.maven.apache.org/maven2/org/apache/maven/apache-maven/3.6.3/apache-maven-3.6.3-bin.zip">https://repo.maven.apache.org/maven2/org/apache/maven/apache-maven/3.6.3/apache-maven-3.6.3-bin.zip</a><br>将apache-maven-3.6.3-bin.zip解压到jenkins主目录下，这里放入&#x2F;mydata&#x2F;jenkins&#x2F;tools目录下</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">mkdir -p /mydata/jenkins/tools</span><br><span class="line">cd /mydata/jenkins/tools</span><br><span class="line">wget https://repo.maven.apache.org/maven2/org/apache/maven/apache-maven/3.6.3/apache-maven-3.6.3-bin.zip</span><br><span class="line">unzip apache-maven-3.6.3-bin.zip</span><br></pre></td></tr></table></figure>
+
+<h2 id="4-2-配置"><a href="#4-2-配置" class="headerlink" title="4.2 配置"></a>4.2 配置</h2><p><img src="/assets/jenkins/1724290354883.jpg" alt="image-1724290354883"></p>
+<p><img src="/assets/jenkins/1724290455012.jpg" alt="image-1724290455012"></p>
+<p>配置路径 &#x2F;var&#x2F;lib&#x2F;jenkins&#x2F;tools&#x2F;apache-maven-3.6.3<br><img src="/assets/jenkins/1724290512872.jpg" alt="image-1724290512872"></p>
 
       </div>
       
         <div class="prev-or-next">
           <div class="post-foot-next">
             
-              <a href="/2024/06/25/Redis%E5%AE%89%E8%A3%85%E8%AF%B4%E6%98%8E/" target="_self">
+              <a href="/2024/08/19/springboot%E9%9B%86%E6%88%90httpclient+keepalive%E7%8E%AF%E5%A2%83/" target="_self">
                 <i class="iconfont icon-chevronleft"></i>
                 <span>Prev</span>
               </a>
@@ -216,21 +238,27 @@
           <div class="post-attach">
             <span class="post-pubtime">
               <i class="iconfont icon-updatetime mr-10" title="Update time"></i>
-              2024-06-25 15:42:04
+              2024-08-22 09:45:01
             </span>
             
                   <span class="post-tags">
                     <i class="iconfont icon-tags mr-10" title="Tags"></i>
                     
                     <span class="span--tag mr-8">
-                      <a href="/tags/%E5%AE%89%E8%A3%85%E6%94%BB%E7%95%A5/" title="安装攻略">
-                        #安装攻略
+                      <a href="/tags/docker/" title="docker">
+                        #docker
                       </a>
                     </span>
                     
                     <span class="span--tag mr-8">
-                      <a href="/tags/haproxy/" title="haproxy">
-                        #haproxy
+                      <a href="/tags/centos/" title="centos">
+                        #centos
+                      </a>
+                    </span>
+                    
+                    <span class="span--tag mr-8">
+                      <a href="/tags/jenkins/" title="jenkins">
+                        #jenkins
                       </a>
                     </span>
                     
@@ -238,11 +266,6 @@
               
           </div>
           <div class="post-foot-prev">
-            
-              <a href="/2024/06/25/Linux%E5%B8%B8%E7%94%A8%E5%91%BD%E4%BB%A4/" target="_self">
-                <span>Next</span>
-                <i class="iconfont icon-chevronright"></i>
-              </a>
             
           </div>
         </div>
@@ -256,7 +279,7 @@
     <div class="title">Contents</div>
     <div class="catalog-content">
       
-        <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#1-%E4%B8%8B%E8%BD%BD"><span class="toc-text">1.下载</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#2-%E8%A7%A3%E5%8E%8B"><span class="toc-text">2.解压</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#3-%E5%AE%89%E8%A3%85"><span class="toc-text">3.安装</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#4-%E9%85%8D%E7%BD%AE"><span class="toc-text">4.配置</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#5-%E8%BF%90%E8%A1%8C"><span class="toc-text">5.运行</span></a></li></ol>
+        <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#1-%E5%88%9B%E5%BB%BA%E5%B7%A5%E4%BD%9C%E7%9B%AE%E5%BD%95%E5%B9%B6%E8%BF%90%E8%A1%8C%E5%AE%B9%E5%99%A8"><span class="toc-text">1.创建工作目录并运行容器</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#2-%E5%AE%89%E8%A3%85jenkins"><span class="toc-text">2.安装jenkins</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#2-1-%E6%9F%A5%E7%9C%8B%E5%88%9D%E5%A7%8B%E5%AF%86%E7%A0%81"><span class="toc-text">2.1 查看初始密码</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2-1-%E8%B7%B3%E8%BF%87%E5%AE%89%E8%A3%85%E6%8F%92%E4%BB%B6%EF%BC%88%E9%87%8D%E8%A6%81%EF%BC%8C%E4%B8%8D%E7%84%B6%E5%89%8D%E9%9D%A2%E5%BE%97%E5%85%A8%E9%83%A8%E9%87%8D%E6%9D%A5%EF%BC%81%EF%BC%81%EF%BC%81%EF%BC%89"><span class="toc-text">2.1 跳过安装插件（重要，不然前面得全部重来！！！）</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#3-%E8%A6%86%E7%9B%96%E5%8E%9F%E5%A7%8B%E7%9A%84%E6%8F%92%E4%BB%B6%E5%8C%85"><span class="toc-text">3 覆盖原始的插件包</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#4-%E9%85%8D%E7%BD%AEmaven%E7%8E%AF%E5%A2%83"><span class="toc-text">4 配置maven环境</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#4-1-%E4%B8%8B%E8%BD%BDmaven%E5%8C%85%EF%BC%8C%E6%94%BE%E5%88%B0%E6%8C%87%E5%AE%9A%E4%BD%8D%E7%BD%AE"><span class="toc-text">4.1 下载maven包，放到指定位置</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#4-2-%E9%85%8D%E7%BD%AE"><span class="toc-text">4.2 配置</span></a></li></ol></li></ol>
       
     </div>
   </div>
@@ -557,12 +580,12 @@
       </a>
       <div class="share-content hidden">
         
-          <a class="share-item" href="https://twitter.com/intent/tweet?text=' + Haproxy%E5%AE%89%E8%A3%85 + '&url=' + https%3A%2F%2Fhyygavin1990.github.io%2F2024%2F06%2F25%2FHaproxy%25E5%25AE%2589%25E8%25A3%2585%2F + '" target="_blank" title="Twitter">
+          <a class="share-item" href="https://twitter.com/intent/tweet?text=' + docker%E5%AE%89%E8%A3%85Java8%E7%89%88%E6%9C%AC%E7%9A%84jenkins + '&url=' + https%3A%2F%2Fhyygavin1990.github.io%2F2024%2F08%2F21%2Fdocker%25E5%25AE%2589%25E8%25A3%2585Java8%25E7%2589%2588%25E6%259C%25AC%25E7%259A%2584jenkins%2F + '" target="_blank" title="Twitter">
             <i class="iconfont icon-twitter"></i>
           </a>
         
         
-          <a class="share-item" href="https://www.facebook.com/sharer.php?u=https://hyygavin1990.github.io/2024/06/25/Haproxy%E5%AE%89%E8%A3%85/" target="_blank" title="Facebook">
+          <a class="share-item" href="https://www.facebook.com/sharer.php?u=https://hyygavin1990.github.io/2024/08/21/docker%E5%AE%89%E8%A3%85Java8%E7%89%88%E6%9C%AC%E7%9A%84jenkins/" target="_blank" title="Facebook">
             <i class="iconfont icon-facebooksquare"></i>
           </a>
         
